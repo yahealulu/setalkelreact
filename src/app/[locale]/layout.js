@@ -42,7 +42,7 @@ export default async function LocaleLayout({ children, params }) {
     notFound();
   }
 
-  const messages = await getMessages(locale);
+  const messages = await getMessages();
 
 
   return (
