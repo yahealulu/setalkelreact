@@ -1,54 +1,54 @@
-'use client';
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import { use, useRef, useEffect } from 'react'
+import Image from '../components/Image'
+import Link from '../components/Link'
+import { ShoppingCart, Truck, Plane, Ship, Calendar, Box, Globe, Tag, Barcode, Package } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { motion, useMotionValue } from 'framer-motion'
+import axios from 'axios'
 
-import { use, useRef, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { ShoppingCart, Truck, Plane, Ship, Calendar, Box, Globe, Tag, Barcode, Package } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { motion, useMotionValue } from 'framer-motion';
-import axios from 'axios';
-
-const ProductPage = ({ params }) => {
-    const resolvedParams = use(params);
-    const containerRef = useRef(null);
-    const progressRef = useRef(null);
-    const x = useMotionValue(0);
+const ProductPage = () => {
+    const { product: productId, locale } = useParams()
+    const containerRef = useRef(null)
+    const progressRef = useRef(null)
+    const x = useMotionValue(0)
 
     const { data: product, isLoading, error } = useQuery({
-        queryKey: ['product', resolvedParams.product],
+        queryKey: ['product', productId],
         queryFn: async () => {
-            const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}products/${resolvedParams.product}`);
-            return data?.data;
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'https://setalkel.amjadshbib.com/api/'}products/${productId}`)
+            return data?.data
         }
-    });
+    })
 
     const { data: variants } = useQuery({
-        queryKey: ['variants', resolvedParams.product],
+        queryKey: ['variants', productId],
         queryFn: async () => {
-            const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}products/${resolvedParams.product}/variants`);
-            return data?.data;
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'https://setalkel.amjadshbib.com/api/'}products/${productId}/variants`)
+            return data?.data
         },
-    });
+    })
 
     const updateProgressBar = (scrollLeft) => {
-        if (!containerRef.current || !progressRef.current) return;
-        const scrollWidth = containerRef.current.scrollWidth - containerRef.current.clientWidth;
-        const progress = (scrollLeft / scrollWidth) * (progressRef.current.clientWidth - 100);
-        x.set(-progress);
-    };
+        if (!containerRef.current || !progressRef.current) return
+        const scrollWidth = containerRef.current.scrollWidth - containerRef.current.clientWidth
+        const progress = (scrollLeft / scrollWidth) * (progressRef.current.clientWidth - 100)
+        x.set(-progress)
+    }
 
     const handleScroll = (e) => {
-        const scrollLeft = e.target.scrollLeft;
-        updateProgressBar(scrollLeft);
-    };
+        const scrollLeft = e.target.scrollLeft
+        updateProgressBar(scrollLeft)
+    }
 
     useEffect(() => {
-        const container = containerRef.current;
+        const container = containerRef.current
         if (container) {
-            container.addEventListener('scroll', handleScroll);
-            return () => container.removeEventListener('scroll', handleScroll);
+            container.addEventListener('scroll', handleScroll)
+            return () => container.removeEventListener('scroll', handleScroll)
         }
-    }, []);
+    }, [])
 
     if (isLoading) {
         return (
@@ -60,7 +60,7 @@ const ProductPage = ({ params }) => {
                     <div className="h-4 bg-gray-200 rounded w-2/3" />
                 </div>
             </div>
-        );
+        )
     }
 
     if (error) {
@@ -70,7 +70,7 @@ const ProductPage = ({ params }) => {
                     Failed to load product
                 </div>
             </div>
-        );
+        )
     }
 
     if (!product) {
@@ -78,7 +78,7 @@ const ProductPage = ({ params }) => {
             <div className="container mx-auto px-4 py-8">
                 <div className="text-gray-500">Product not found</div>
             </div>
-        );
+        )
     }
 
     return (
@@ -88,10 +88,9 @@ const ProductPage = ({ params }) => {
                 <div className="space-y-6">
                     <div className="relative h-[500px] bg-gray-50 rounded-2xl overflow-hidden">
                         <Image
-                            src={`${process.env.NEXT_PUBLIC_Img}/${product.image}`}
+                            src={`${process.env.REACT_APP_IMG_URL || 'https://setalkel.amjadshbib.com/storage/'}${product.image}`}
                             alt={product.name_translations?.en || 'Product'}
-                            fill
-                            className="object-contain"
+                            className="w-full h-full object-contain"
                         />
                     </div>
                 </div>
@@ -135,17 +134,16 @@ const ProductPage = ({ params }) => {
                         <div ref={containerRef} className="grid grid-cols-5 gap-6 overflow-x-auto hide-scrollbar" style={{ scrollBehavior: 'smooth', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
                             {variants.map((variant) => (
                                 <Link 
-                                    href={`/${resolvedParams.locale}/${resolvedParams.product}/${variant.id}`} 
+                                    to={`/${locale || 'ar'}/${productId}/${variant.id}`} 
                                     key={variant.id}
                                     className="block"
                                 >
                                     <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
                                         <div className="relative h-48 ">
                                             <Image
-                                                src={`${process.env.NEXT_PUBLIC_Img}/${variant.image}`}
+                                                src={`${process.env.REACT_APP_IMG_URL || 'https://setalkel.amjadshbib.com/storage/'}${variant.image}`}
                                                 alt={`${product.name_translations?.en} - ${variant.size}`}
-                                                fill
-                                                className=""
+                                                className="w-full h-full object-cover"
                                             />
                                             {variant.is_new && (
                                                 <span className="absolute top-0 left-0 bg-green-500 text-white px-2 py-1 rounded-tl-2xl text-xs">New</span>
@@ -205,7 +203,7 @@ const ProductPage = ({ params }) => {
                 }
             `}</style>
         </div>
-    );
-};
+    )
+}
 
-export default ProductPage;
+export default ProductPage

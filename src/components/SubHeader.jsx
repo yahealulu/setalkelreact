@@ -1,22 +1,21 @@
-'use client';
-
-import { useState } from 'react';
-import Link from 'next/link';
-import { Search, ChevronDown, ShoppingCart } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react'
+import Link from './Link'
+import { Search, ChevronDown, ShoppingCart } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const SubHeader = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const navigate = useNavigate()
 
   return (
     <div className="border-b border-gray-200 bg-[#F9F9F9]">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-[80px] gap-6">
           <div className="p-4 ">
-            <Link href="/">
-              <img src="/images/logo_black_and_gold.png" alt="Sel alkel logo" className="w-20" /></Link>
+            <Link to="/">
+              <img src="/images/logo_black_and_gold.png" alt="Sel alkel logo" className="w-20" />
+            </Link>
           </div>
           {/* All Categories Button */}
           <div className="relative">
@@ -53,19 +52,19 @@ const SubHeader = () => {
           {/* Additional Links */}
           <div className="flex items-center gap-6">
             <Link
-              href="/promotions"
+              to="/promotions"
               className="flex items-center gap-2 text-gray-600 hover:text-[#00B207] transition-colors"
             >
               <span className="text-md">Promotions</span>
             </Link>
             <Link
-              href="/breakfast"
+              to="/breakfast"
               className="flex items-center gap-2 text-gray-600 hover:text-[#00B207] transition-colors"
             >
               <span className="text-md">Ideas For Breakfast</span>
             </Link>
             <Link
-              href="/weekly-discounts"
+              to="/weekly-discounts"
               className="flex items-center gap-2 text-gray-600 hover:text-[#00B207] transition-colors"
             >
               <span className="text-md">Weekly Discounts</span>
@@ -74,10 +73,10 @@ const SubHeader = () => {
 
           {/* Cart Icon */}
           <Link
-            href="/cart"
+            to="/cart"
             className="w-10 h-10 rounded-full bg-[#E6F5E7] flex items-center justify-center transition-colors"
           >
-            <div className="relative cursor-pointer" onClick={() => router.push("/orders/new")}>
+            <div className="relative cursor-pointer" onClick={() => navigate("/orders/new")}>
               <ShoppingCart size={18} className="text-green-500" />
               <span className="absolute -top-4 -right-4 w-5 h-5 bg-white text-green-500 text-xs rounded-full flex items-center justify-center">
                 0
@@ -87,7 +86,7 @@ const SubHeader = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SubHeader; 
+export default SubHeader

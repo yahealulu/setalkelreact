@@ -1,13 +1,11 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
 export default function Login() {
-    const router = useRouter()
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     
@@ -17,13 +15,11 @@ export default function Login() {
             return response.data
         },
         onSuccess: (data) => {
-            // console.log(data.data)
             localStorage.setItem('token', data.data.token)
             toast.success("Login Successfully")
-            router.push('/') // Redirect to dashboard or appropriate page
+            navigate('/') // Redirect to dashboard or appropriate page
         },
         onError: (error) => {
-            // You might want to add proper error handling here
             console.error('Login failed:', error.message)
             alert('Login failed. Please check your credentials.')
         }
@@ -112,7 +108,7 @@ export default function Login() {
                             </p>
 
                             <button
-                                onClick={() => router.push('/auth/register')}
+                                onClick={() => navigate('/auth/register')}
                                 className="rounded px-6 py-2 text-gray-900 font-medium hover:bg-gray-100 transition"
                             >
                                 Register

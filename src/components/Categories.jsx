@@ -1,8 +1,7 @@
-'use client';
-
-import Image from 'next/image';
-import Link from 'next/link';
-import { freshFruit, freshvegetables, meet, Snacks } from '../../public/images';
+import React from 'react'
+import Image from './Image'
+import Link from './Link'
+import { freshFruit, freshvegetables, meet, Snacks } from '../../public/images'
 
 const Categories = () => {
   const categories = [
@@ -30,7 +29,7 @@ const Categories = () => {
       icon: Snacks,
       href: '/category/snacks'
     }
-  ];
+  ]
 
   return (
     <section className="py-12">
@@ -39,7 +38,7 @@ const Categories = () => {
           {categories.map((category) => (
             <Link
               key={category.id}
-              href={category.href}
+              to={category.href}
               className="flex flex-col items-center group"
             >
               <div className="w-24 h-24 rounded-[100%]  flex items-center justify-center mb-4">
@@ -47,8 +46,7 @@ const Categories = () => {
                   <Image
                     src={category.icon}
                     alt={category.name}
-                    fill
-                    className=" relative w-24 h-24 rounded-[100%]  "
+                    className="relative w-24 h-24 rounded-[100%]"
                   />
                 </div>
               </div>
@@ -60,7 +58,7 @@ const Categories = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Categories; 
+export default Categories

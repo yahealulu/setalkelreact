@@ -1,19 +1,20 @@
-"use client"
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { use } from 'react';
-import Image from 'next/image';
-import { ShoppingCart, Box, Scale, Package, Calendar, Clock, Tag } from 'lucide-react';
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios"
+import Image from '../components/Image'
+import { ShoppingCart, Box, Scale, Package, Calendar, Clock, Tag } from 'lucide-react'
 
-const VariantPage = ({ params }) => {
-    const resolvedParams = use(params);
+const VariantPage = () => {
+    const { product: productId, variant: variantId } = useParams()
+    
     const { data: variant, isLoading, error } = useQuery({
-        queryKey: ['variant', resolvedParams.product, resolvedParams.variant],
+        queryKey: ['variant', productId, variantId],
         queryFn: async () => {
-            const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}products/${resolvedParams.product}/variants/${resolvedParams.variant}`);
-            return data?.data;
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'https://setalkel.amjadshbib.com/api/'}products/${productId}/variants/${variantId}`)
+            return data?.data
         }
-    });
+    })
 
     if (isLoading) {
         return (
@@ -25,7 +26,7 @@ const VariantPage = ({ params }) => {
                     <div className="h-4 bg-gray-200 rounded w-2/3" />
                 </div>
             </div>
-        );
+        )
     }
 
     if (error) {
@@ -35,7 +36,7 @@ const VariantPage = ({ params }) => {
                     Failed to load variant details
                 </div>
             </div>
-        );
+        )
     }
 
     if (!variant) {
@@ -43,7 +44,7 @@ const VariantPage = ({ params }) => {
             <div className="container mx-auto px-4 py-8">
                 <div className="text-gray-500">Variant not found</div>
             </div>
-        );
+        )
     }
 
     return (
@@ -53,10 +54,9 @@ const VariantPage = ({ params }) => {
                 <div className="space-y-6">
                     <div className="relative h-[500px] w-[400px] mx-auto rounded-2xl overflow-hidden">
                         <Image
-                            src={`${process.env.NEXT_PUBLIC_Img}/${variant.image}`}
+                            src={`${process.env.REACT_APP_IMG_URL || 'https://setalkel.amjadshbib.com/storage/'}${variant.image}`}
                             alt={variant.size}
-                            fill
-                            className="object-contain"
+                            className="w-full h-full object-contain"
                         />
                         {variant.is_new && (
                             <span className="absolute top-0 left-0 bg-green-500 text-white px-3 py-1 rounded-t--full text-sm">
@@ -196,7 +196,7 @@ const VariantPage = ({ params }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default VariantPage;
+export default VariantPage

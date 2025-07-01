@@ -1,16 +1,10 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Register() {
-    const router = useRouter()
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
-    //   'role':"agent",
-    //   'address':address,
-    //   "country_id":countryId, select list
     
     return (
         <div className="px-4 py-8 sm:px-6 lg:px-8">
@@ -31,8 +25,6 @@ export default function Register() {
                                         name="name"
                                         type="text"
                                         required
-                                        //value={name}
-                                        //onChange={(e) => setEmail(e.target.value)}
                                         className="mt-1 block w-full rounded border border-gray-300 px-4 py-2 shadow-sm focus:border-[#8bc34a] focus:ring-[#8bc34a] sm:text-sm"
                                     />
                                 </div>
@@ -76,8 +68,6 @@ export default function Register() {
                                         name="phone"
                                         type="number"
                                         required
-                                        //value={name}
-                                        //onChange={(e) => setEmail(e.target.value)}
                                         className="mt-1 block w-full rounded border border-gray-300 px-4 py-2 shadow-sm focus:border-[#8bc34a] focus:ring-[#8bc34a] sm:text-sm"
                                     />
                                 </div>
@@ -91,8 +81,6 @@ export default function Register() {
                                         name="company_name"
                                         type="text"
                                         required
-                                        //value={company_name}
-                                        //onChange={(e) => setEmail(e.target.value)}
                                         className="mt-1 block w-full rounded border border-gray-300 px-4 py-2 shadow-sm focus:border-[#8bc34a] focus:ring-[#8bc34a] sm:text-sm"
                                     />
 
@@ -100,12 +88,10 @@ export default function Register() {
                                         Port <span className="text-red-600">*</span>
                                     </label>
                                     <input
-                                        id="company_name"
-                                        name="company_name"
+                                        id="port"
+                                        name="port"
                                         type="text"
                                         required
-                                        //value={company_name}
-                                        //onChange={(e) => setEmail(e.target.value)}
                                         className="mt-1 block w-full rounded border border-gray-300 px-4 py-2 shadow-sm focus:border-[#8bc34a] focus:ring-[#8bc34a] sm:text-sm"
                                     />
                                 </div>
@@ -114,7 +100,7 @@ export default function Register() {
                                     type="submit"
                                     className="w-full rounded bg-[#8bc34a] px-4 py-2 text-white font-medium hover:bg-[#7fb440] transition"
                                 >
-                                    Log In
+                                    Register
                                 </button>
 
                                 <div className="flex items-center justify-between">
@@ -129,17 +115,15 @@ export default function Register() {
                             </form>
                         </div>
 
-                        {/* Register */}
+                        {/* Login */}
                         <div className="border-l border-gray-200 pl-10 text-center">
-                            <h2 className="text-2xl font-medium text-gray-900 mb-4">REGISTER</h2>
+                            <h2 className="text-2xl font-medium text-gray-900 mb-4">LOGIN</h2>
                             <p className="text-md text-gray-700 mb-6 leading-relaxed">
-                                Registering for this site allows you to access your order status and history.
-                                Just fill in the fields below, and we'll get a new account set up for you in no time.
-                                We will only ask you for information necessary to make the purchase process faster and easier.
+                                Already have an account? Login to access your order status and history.
                             </p>
 
                             <button
-                                onClick={() => router.push('/auth/login')}
+                                onClick={() => navigate('/auth/login')}
                                 className="rounded px-6 py-2 text-gray-900 font-medium hover:bg-gray-100 transition"
                             >
                                 Login
@@ -151,4 +135,3 @@ export default function Register() {
         </div>
     )
 }
-
